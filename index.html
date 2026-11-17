@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChrisCraft Interactive</title>
+<meta name="description" content="ChrisCraft Interactive is a small game development company. Makers of ScaleUp: Cosmic Growth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,400..900&family=Barlow+Condensed:wght@600;800;900&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a quiet dark studio site; the ScaleUp page switches into the game's own purple, yellow and teal world. */
+:root {
+  --void: #070912;
+  --deep: #0e1222;
+  --line: #232a44;
+  --ice: #e8ecf7;
+  --mist: #9aa3bf;
+  --flare: #ffb547;
+  --flare-ink: #1a1203;
+  --display: "Anybody", "Arial Narrow", system-ui, sans-serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --game: "Barlow Condensed", "Arial Narrow", sans-serif;
+  /* ScaleUp brand */
+  --su-bg: #1b1150;
+  --su-deep: #120a3a;
+  --su-card: #251a66;
+  --su-line: #3a2d8a;
+  --su-yellow: #ffcf2e;
+  --su-teal: #3fe0c8;
+  --su-pink: #ff8fc8;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--void); color: var(--ice); font: 400 17px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+a { color: var(--flare); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--flare); outline-offset: 3px; border-radius: 4px; }
+img, video, canvas { max-width: 100%; display: block; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.02; text-wrap: balance; margin: 0; }
+.wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
+.mono { font-family: var(--mono); font-size: 13px; letter-spacing: .04em; color: var(--mist); }
+[hidden] { display: none !important; }
+
+/* Header */
+header.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--void) 82%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ice); }
+.brand-mark { width: 26px; height: 26px; }
+.brand-name { font-family: var(--display); font-weight: 800; font-stretch: 120%; font-size: 17px; letter-spacing: .02em; }
+.brand-name span { font-weight: 400; font-stretch: 100%; color: var(--mist); }
+nav.links { display: flex; gap: 22px; flex-wrap: wrap; }
+nav.links a { color: var(--mist); text-decoration: none; font-weight: 500; font-size: 15px; }
+nav.links a:hover, nav.links a[aria-current="page"] { color: var(--ice); }
+
+/* Studio home */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+#cosmos { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero .wrap { position: relative; padding: 120px 0 104px; }
+.hero h1 { font-size: clamp(48px, 8.4vw, 112px); font-weight: 900; font-stretch: 62%; text-transform: uppercase; letter-spacing: -.01em; }
+.hero h1 .wide { display: block; font-stretch: 150%; font-weight: 800; color: var(--flare); font-size: .72em; letter-spacing: .01em; }
+.hero p.lede { max-width: 40ch; color: var(--mist); font-size: 20px; margin: 24px 0 0; }
+section.block { padding: 88px 0; border-bottom: 1px solid var(--line); }
+.label { margin-bottom: 24px; }
+.label .mono { color: var(--flare); }
+h2 { font-size: clamp(36px, 5vw, 60px); font-weight: 800; font-stretch: 80%; }
+.game-card { display: grid; grid-template-columns: 1.2fr 1fr; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; text-decoration: none; color: var(--ice); background: var(--deep); transition: transform .25s, border-color .25s; }
+.game-card:hover { transform: translateY(-3px); border-color: var(--su-teal); }
+.game-card img { width: 100%; height: 100%; object-fit: cover; }
+.game-card .info { padding: 32px; display: grid; gap: 14px; align-content: center; }
+.game-card .row { display: flex; align-items: center; gap: 14px; }
+.game-card .row img { width: 64px; height: 64px; border-radius: 14px; }
+.game-card h3 { font-family: var(--game); font-weight: 800; font-size: 34px; text-transform: uppercase; letter-spacing: .01em; }
+.game-card p { margin: 0; color: var(--mist); }
+.more { font-weight: 600; color: var(--su-teal); }
+.pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; font: 500 13px var(--mono); justify-self: start; }
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--flare); box-shadow: 0 0 10px var(--flare); }
+.about { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: end; }
+.about p { color: var(--mist); max-width: 52ch; margin: 0; font-size: 18px; }
+.contact-card { border: 1px solid var(--line); background: var(--deep); border-radius: 14px; padding: 28px; display: grid; gap: 14px; align-content: start; }
+.contact-card .addr { font-family: var(--mono); font-size: 18px; color: var(--ice); word-break: break-all; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 12px; font: 600 16px var(--body); text-decoration: none; border: 1px solid var(--line); color: var(--ice); background: var(--deep); cursor: pointer; justify-self: start; }
+.btn:hover { filter: brightness(1.1); }
+
+/* ScaleUp page */
+#scaleup-view { background: var(--su-bg); position: relative; overflow: hidden; }
+#scaleup-view::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-conic-gradient(from 0deg at 50% 0%, rgba(255,255,255,.035) 0 6deg, transparent 6deg 12deg); }
+.su { position: relative; }
+.su-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; padding: 72px 0 56px; }
+.su-logo { width: 120px; height: auto;filter: drop-shadow(0 10px 30px rgba(255,143,200,.35)); }
+.su-title { font-family: var(--game); font-weight: 900; text-transform: uppercase; line-height: .88; font-size: clamp(64px, 11vw, 132px); margin-top: 18px; letter-spacing: .005em; }
+.su-title span { color: var(--su-yellow); }
+.su-sub { font-family: var(--game); font-weight: 800; letter-spacing: .32em; text-transform: uppercase; color: var(--su-teal); font-size: clamp(18px, 2.4vw, 26px); margin-top: 8px; }
+.su-hero p { font-size: 19px; color: #d8d3f5; max-width: 44ch; margin: 22px 0 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.chip { font: 700 14px var(--body); padding: 7px 14px; border-radius: 999px; color: #1b1150; }
+.chip.y { background: var(--su-yellow); } .chip.t { background: var(--su-teal); } .chip.p { background: var(--su-pink); }
+.play { display: inline-flex; align-items: center; gap: 12px; margin-top: 30px; padding: 14px 24px 14px 18px; border-radius: 14px; background: #000; color: #fff; text-decoration: none; border: 1px solid #555; }
+.play small { display: block; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+.play b { display: block; font-size: 20px; line-height: 1.1; }
+.play:hover { border-color: var(--su-yellow); }
+.soon { display: block; margin-top: 10px; font-size: 14px; color: #b9b2e6; }
+.phone { justify-self: center; width: min(320px, 100%); aspect-ratio: 9 / 16; border-radius: 34px; padding: 10px; background: #0b0726; border: 2px solid var(--su-line); box-shadow: 0 30px 80px rgba(0,0,0,.5), 0 0 0 6px rgba(63,224,200,.08); }
+.phone video { width: 100%; height: 100%; object-fit: cover; border-radius: 26px; background: #000; }
+.su-section { padding: 64px 0; border-top: 1px solid var(--su-line); }
+.su-h { font-family: var(--game); font-weight: 900; text-transform: uppercase; font-size: clamp(40px, 6vw, 64px); line-height: .95; }
+.su-h span { color: var(--su-yellow); }
+.gallery { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 240px); gap: 18px; overflow-x: auto; padding: 28px 2px 18px; scroll-snap-type: x mandatory; scrollbar-color: var(--su-line) transparent; }
+.gallery img { width: 100%; height: auto; border-radius: 18px; scroll-snap-align: start; border: 1px solid var(--su-line); cursor: zoom-in; }
+.gallery button { all: unset; cursor: zoom-in; border-radius: 18px; }
+.gallery button:focus-visible { outline: 2px solid var(--su-yellow); outline-offset: 3px; }
+.hint { font-size: 14px; color: #b9b2e6; }
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+.feat { background: var(--su-card); border: 1px solid var(--su-line); border-radius: 18px; padding: 24px; display: grid; gap: 6px; align-content: start; }
+.feat b { font-family: var(--game); font-weight: 900; font-size: 48px; line-height: 1; color: var(--su-yellow); font-variant-numeric: tabular-nums; }
+.feat:nth-child(3n+2) b { color: var(--su-teal); }
+.feat:nth-child(3n) b { color: var(--su-pink); }
+.feat h3 { font-family: var(--game); font-weight: 800; font-size: 24px; text-transform: uppercase; letter-spacing: .01em; }
+.feat p { margin: 0; color: #cfc9f0; font-size: 16px; }
+.banner { border-radius: 22px; overflow: hidden; border: 1px solid var(--su-line); position: relative; }
+.banner img { width: 100%; height: auto; }
+.cta-end { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; margin-top: 28px; }
+.cta-end p { margin: 0; font-size: 18px; color: #d8d3f5; max-width: 50ch; }
+
+/* Lightbox */
+.lightbox { position: fixed; inset: 0; z-index: 50; background: rgba(8,4,24,.92); display: grid; place-items: center; padding: 24px; }
+.lightbox img { max-height: 90vh; width: auto; border-radius: 18px; }
+.lightbox button { position: absolute; top: 16px; right: 16px; background: var(--su-card); color: #fff; border: 1px solid var(--su-line); border-radius: 999px; width: 44px; height: 44px; font-size: 22px; cursor: pointer; }
+
+/* Privacy */
+.legal { padding: 72px 0 96px; }
+.legal .doc { max-width: 70ch; }
+.legal h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 900; font-stretch: 62%; text-transform: uppercase; }
+.legal h2 { font-size: 26px; font-stretch: 110%; font-weight: 700; margin: 40px 0 10px; }
+.legal p, .legal li { color: #c3c9dc; }
+.legal li { margin-bottom: 8px; }
+.legal .meta { margin: 14px 0 32px; }
+.legal table { width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 8px; }
+.legal th, .legal td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.legal th { font-family: var(--mono); font-weight: 500; font-size: 12px; color: var(--mist); text-transform: uppercase; letter-spacing: .06em; }
+.table-scroll { overflow-x: auto; }
+
+footer { padding: 40px 0 56px; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; color: var(--mist); font-size: 14px; }
+footer a { color: var(--mist); }
+
+@media (max-width: 860px) {
+  .game-card, .about, .su-hero { grid-template-columns: 1fr; }
+  .features { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  nav.links { gap: 14px; }
+  nav.links a { font-size: 14px; }
+  .brand-name span { display: none; }
+  .features { grid-template-columns: 1fr; }
+  .game-card .info { padding: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .game-card { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="ChrisCraft Interactive home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="5" fill="#ffb547"/>
+        <circle cx="16" cy="16" r="10" fill="none" stroke="#ffb547" stroke-opacity=".55" stroke-width="1.5"/>
+        <circle cx="16" cy="16" r="15" fill="none" stroke="#e8ecf7" stroke-opacity=".3" stroke-width="1.2"/>
+      </svg>
+      <span class="brand-name">CHRISCRAFT <span>Interactive</span></span>
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="#games">Games</a>
+      <a href="#scaleup">ScaleUp</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="home-view">
+  <section class="hero" aria-labelledby="hero-title">
+    <canvas id="cosmos" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <h1 id="hero-title">Small studio.<span class="wide">Big games.</span></h1>
+      <p class="lede">We're a small game development company making fun, easy-to-play mobile games.</p>
+    </div>
+  </section>
+
+  <section class="block" id="games" aria-labelledby="games-title">
+    <div class="wrap">
+      <div class="label"><span class="mono">Our games</span></div>
+      <a class="game-card" href="#scaleup" aria-label="ScaleUp: Cosmic Growth, see the game">
+        <img src="assets/feature.jpg" alt="ScaleUp: Cosmic Growth artwork with the S logo, a sun, a planet and a spaceship" width="1024" height="500">
+        <div class="info">
+          <div class="row">
+            <img src="assets/icon.jpg" alt="" width="64" height="64">
+            <h3 id="games-title">ScaleUp<br>Cosmic Growth</h3>
+          </div>
+          <span class="pill">Coming soon to Google Play</span>
+          <p>Grow from a tiny speck into the whole universe.</p>
+          <span class="more">See the game →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="block" id="contact" aria-labelledby="contact-title">
+    <div class="wrap about">
+      <div>
+        <div class="label"><span class="mono">Contact</span></div>
+        <h2 id="contact-title">Get in touch.</h2>
+      </div>
+      <div class="contact-card">
+        <span class="mono">Questions, feedback or support</span>
+        <a class="addr" href="mailto:vasanthprorj@gmail.com">vasanthprorj@gmail.com</a>
+        <button class="btn" type="button" id="copy-email">Copy address</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="scaleup-view" hidden>
+  <div class="wrap su">
+    <section class="su-hero" aria-labelledby="su-title">
+      <div>
+        <img class="su-logo" src="assets/logo.png" alt="ScaleUp logo" width="512" height="512">
+        <h1 class="su-title" id="su-title">Scale<span>Up</span></h1>
+        <div class="su-sub">Cosmic Growth</div>
+        <p>Start as a tiny speck and grow into the whole universe. Absorb everything smaller than you, shatter your rivals, and keep growing, level after level.</p>
+        <div class="chips">
+          <span class="chip y">Free to play</span>
+          <span class="chip t">Android</span>
+          <span class="chip p">Arcade</span>
+        </div>
+        <a class="play" href="https://play.google.com/store/apps/details?id=com.chriscraft.scaleupio" target="_blank" rel="noopener">
+          <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path fill="#3fe0c8" d="M4 2.5v19l10.2-9.5L4 2.5Z"/><path fill="#ffcf2e" d="m19.2 9.2-2.5 2.3 2.5 2.3 2.4-1.4c.7-.4.7-1.4 0-1.8l-2.4-1.4Z"/><path fill="#ff8fc8" d="M15.6 13.3 5.9 22.4l12-6.8-2.3-2.3Z"/><path fill="#9b8cff" d="m15.6 10.7 2.3-2.3-12-6.8 9.7 9.1Z"/></svg>
+          <span><small>Coming soon on</small><b>Google Play</b></span>
+        </a>
+        <span class="soon">Launching soon. Follow along and be one of the first to play.</span>
+      </div>
+      <div class="phone">
+        <video src="assets/trailer.mp4" poster="assets/trailer-poster.jpg" controls muted loop playsinline preload="metadata" aria-label="ScaleUp gameplay trailer"></video>
+      </div>
+    </section>
+
+    <section class="su-section" aria-labelledby="shots-title">
+      <h2 class="su-h" id="shots-title">See it <span>in action</span></h2>
+      <div class="gallery" id="gallery"></div>
+      <p class="hint">Scroll sideways for more. Tap a screenshot to enlarge it.</p>
+    </section>
+
+    <section class="su-section" aria-labelledby="feat-title">
+      <h2 class="su-h" id="feat-title">Atom to <span>universe</span></h2>
+      <div class="features">
+        <div class="feat"><b>112</b><h3>Levels</h3><p>From quarks all the way out to the cosmic web.</p></div>
+        <div class="feat"><b>6</b><h3>Game modes</h3><p>Including Team Battle, where you grow together.</p></div>
+        <div class="feat"><b>22</b><h3>Vehicles</h3><p>Each ship has its own power. Collect and upgrade them in the garage.</p></div>
+        <div class="feat"><b>17</b><h3>Ranks</h3><p>Climb through 8 leagues, from Cadet to the top.</p></div>
+        <div class="feat"><b>1</b><h3>Science fact per level</h3><p>Learn something real about the thing you just became.</p></div>
+        <div class="feat"><b>×4</b><h3>Reward wheel</h3><p>Spin to multiply your rewards after a level.</p></div>
+      </div>
+    </section>
+
+    <section class="su-section" aria-labelledby="end-title">
+      <div class="banner"><img src="assets/feature.jpg" alt="ScaleUp: Cosmic Growth. Grow from a Planck speck to the whole universe." width="1024" height="500"></div>
+      <div class="cta-end">
+        <p id="end-title">ScaleUp: Cosmic Growth is coming soon to Google Play. Questions? Write to <a href="mailto:vasanthprorj@gmail.com">vasanthprorj@gmail.com</a>.</p>
+        <a class="play" style="margin-top:0" href="https://play.google.com/store/apps/details?id=com.chriscraft.scaleupio" target="_blank" rel="noopener">
+          <span><small>Coming soon on</small><b>Google Play</b></span>
+        </a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<main id="privacy-view" class="legal" hidden>
+  <div class="wrap">
+    <article class="doc" aria-labelledby="privacy-title">
+      <h1 id="privacy-title">Privacy policy</h1>
+      <p class="mono meta">ChrisCraft Interactive · Effective 17 November 2026</p>
+
+      <p>This policy explains what information is handled when you play games published by ChrisCraft Interactive on Google Play, including <strong>ScaleUp: Cosmic Growth</strong>. ChrisCraft Interactive is the trading name of an individual developer based in India.</p>
+
+      <h2>What we collect</h2>
+      <p>We do not ask you to create an account with us, and we do not collect your name, phone number or contacts. Your game progress and settings are stored on your device.</p>
+      <p>The game uses Google services that collect some information to work. Google handles this information under its own privacy policy.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Service</th><th>What it uses</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Google AdMob</td><td>Advertising ID, device and app information, IP address (used for approximate location), ad interactions</td><td>Showing ads, measuring them, and preventing fraud</td></tr>
+            <tr><td>Google Play Games Services</td><td>Your Play Games profile (player ID, gamer name, avatar), achievements</td><td>Sign-in and achievements</td></tr>
+            <tr><td>Google Play Billing</td><td>Purchase and order details. Google processes your payment; we never see your card or bank details.</td><td>In-app purchases such as Fusion Orbs</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>How we use it</h2>
+      <ul>
+        <li>To run the game, save your progress and unlock achievements.</li>
+        <li>To deliver purchases and handle refunds or support requests.</li>
+        <li>To show ads that help keep the game free.</li>
+        <li>To fix crashes and improve the game.</li>
+      </ul>
+      <p>We do not sell your personal information.</p>
+
+      <h2>Ads and your choices</h2>
+      <p>Ads may be personalised using your advertising ID. You can reset or delete it, or opt out of personalised ads, in your Android settings under Google → Ads. Where the law requires it, the game will ask for your consent before showing personalised ads.</p>
+
+      <h2>Children</h2>
+      <p>Our games are not directed at children under 13. If you believe a child has given us personal information, email us and we will delete it.</p>
+
+      <h2>How long we keep it</h2>
+      <p>Information on your phone stays until you uninstall the game. Emails you send us are kept only as long as needed to answer you and keep basic records.</p>
+
+      <h2>Your rights</h2>
+      <p>You can ask us to access, correct or delete personal information we hold about you, or withdraw consent you have given. Email us and we will reply within 30 days. For information held by Google, use your Google Account settings.</p>
+
+      <h2>Security</h2>
+      <p>Data sent between the game and Google services is encrypted in transit. No system is perfectly secure, but we take reasonable steps to protect your information.</p>
+
+      <h2>Changes</h2>
+      <p>If we change this policy, we will update it on this page and change the effective date above.</p>
+
+      <h2>Contact</h2>
+      <p>ChrisCraft Interactive<br>Email: <a href="mailto:vasanthprorj@gmail.com">vasanthprorj@gmail.com</a></p>
+
+      <h2>Google's policies</h2>
+      <p><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a> · <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses data from apps that use its services</a></p>
+    </article>
+  </div>
+</main>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Screenshot">
+  <img id="lightbox-img" alt="">
+  <button type="button" id="lightbox-close" aria-label="Close">×</button>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 ChrisCraft Interactive</span>
+    <span><a href="#scaleup">ScaleUp</a> · <a href="#privacy">Privacy policy</a> · <a href="#contact">Contact</a></span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // Screenshot gallery
+  const shots = [
+    "Grow from an atom to the universe",
+    "Absorb orbs and shatter smaller rivals",
+    "A real science fact in every level",
+    "112 levels, from quarks to the cosmic web",
+    "6 game modes including Team Battle",
+    "22 vehicles with their own powers",
+    "Climb 17 ranks through 8 leagues",
+    "Spin the wheel to multiply your rewards"
+  ];
+  const gal = document.getElementById("gallery");
+  const lb = document.getElementById("lightbox"), lbImg = document.getElementById("lightbox-img");
+  shots.forEach((alt, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", "Enlarge: " + alt);
+    b.innerHTML = `<img src="assets/shot-${i + 1}.jpg" alt="${alt}" width="540" height="960" loading="lazy">`;
+    b.addEventListener("click", () => { lbImg.src = `assets/shot-${i + 1}.jpg`; lbImg.alt = alt; lb.hidden = false; document.getElementById("lightbox-close").focus(); });
+    gal.appendChild(b);
+  });
+  const closeLb = () => { lb.hidden = true; };
+  document.getElementById("lightbox-close").addEventListener("click", closeLb);
+  lb.addEventListener("click", e => { if (e.target === lb) closeLb(); });
+  addEventListener("keydown", e => { if (e.key === "Escape") closeLb(); });
+
+  // Copy email
+  document.getElementById("copy-email").addEventListener("click", async e => {
+    const btn = e.currentTarget;
+    try { await navigator.clipboard.writeText("vasanthprorj@gmail.com"); btn.textContent = "Copied"; }
+    catch { btn.textContent = "Select the address above to copy"; }
+    setTimeout(() => btn.textContent = "Copy address", 2200);
+  });
+
+  // Routing
+  const views = { home: document.getElementById("home-view"), scaleup: document.getElementById("scaleup-view"), privacy: document.getElementById("privacy-view") };
+  const titles = { home: "ChrisCraft Interactive", scaleup: "ScaleUp: Cosmic Growth · ChrisCraft Interactive", privacy: "Privacy policy · ChrisCraft Interactive" };
+  function route() {
+    const h = location.hash.slice(1);
+    const v = (h === "scaleup" || h === "privacy") ? h : "home";
+    for (const k in views) views[k].hidden = k !== v;
+    document.title = titles[v];
+    document.querySelectorAll("nav.links a").forEach(a => a.toggleAttribute("aria-current", a.getAttribute("href") === "#" + v));
+    document.querySelectorAll("nav.links a[aria-current]").forEach(a => a.setAttribute("aria-current", "page"));
+    if (v !== "home") window.scrollTo(0, 0);
+    else if (h) { const t = document.getElementById(h); if (t) t.scrollIntoView(); }
+    else window.scrollTo(0, 0);
+    if (v !== "scaleup") { const vid = views.scaleup.querySelector("video"); if (vid) vid.pause(); }
+  }
+  addEventListener("hashchange", route);
+  route();
+
+  // Home hero starfield
+  const cv = document.getElementById("cosmos"), ctx = cv.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W, H, stars = [];
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    stars = Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .2, a: Math.random() * .7 + .15, tw: Math.random() * 6.28 }));
+  }
+  resize(); addEventListener("resize", resize);
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  function frame(t) {
+    if (views.home.hidden) { requestAnimationFrame(frame); return; }
+    ctx.clearRect(0, 0, W, H);
+    for (const s of stars) {
+      ctx.fillStyle = `rgba(232,236,247,${reduce ? s.a : s.a * (.6 + .4 * Math.sin(t / 900 + s.tw))})`;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+    }
+    const k = reduce ? .5 : (t % 3200) / 3200;
+    const cx = W * (W < 860 ? .8 : .72), cy = H * .45, base = Math.min(W, H) * .08;
+    const r = base * (1 + 1.4 * easeOut(k));
+    const g = ctx.createRadialGradient(cx - r * .3, cy - r * .3, r * .1, cx, cy, r);
+    g.addColorStop(0, "rgba(255,244,220,.95)"); g.addColorStop(.45, "rgba(255,181,71,.85)"); g.addColorStop(1, "rgba(122,61,0,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, r * 1.15, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = "rgba(255,181,71,.18)"; ctx.lineWidth = 1;
+    for (let i = 1; i <= 3; i++) { ctx.beginPath(); ctx.arc(cx, cy, r * (1.4 + i * .55), 0, 6.283); ctx.stroke(); }
+    if (!reduce) {
+      for (let i = 0; i < 7; i++) {
+        const ang = i * .9 + t / 2400, dist = r * (3.4 - 2.2 * ((t / 1700 + i * .37) % 1));
+        ctx.fillStyle = "rgba(232,236,247,.55)"; ctx.beginPath(); ctx.arc(cx + Math.cos(ang) * dist, cy + Math.sin(ang) * dist, 1.5 + (i % 3), 0, 6.283); ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

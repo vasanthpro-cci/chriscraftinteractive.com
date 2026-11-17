@@ -345,7 +345,7 @@ footer a { color: var(--mist); }
 <footer>
   <div class="wrap">
     <span>© 2026 ChrisCraft Interactive</span>
-    <span><a href="#scaleup">ScaleUp</a> · <a href="#privacy">Privacy policy</a> · <a href="#contact">Contact</a></span>
+    <span><a href="#scaleup">ScaleUp</a> · <a href="privacy.html">Privacy policy</a> · <a href="#contact">Contact</a></span>
   </div>
 </footer>
 
@@ -388,6 +388,7 @@ footer a { color: var(--mist); }
   const titles = { home: "ChrisCraft Interactive", scaleup: "ScaleUp: Cosmic Growth · ChrisCraft Interactive", privacy: "Privacy policy · ChrisCraft Interactive" };
   function route() {
     const h = location.hash.slice(1);
+    if (h === "privacy") { location.replace("privacy.html"); return; }
     const v = (h === "scaleup" || h === "privacy") ? h : "home";
     for (const k in views) views[k].hidden = k !== v;
     document.title = titles[v];

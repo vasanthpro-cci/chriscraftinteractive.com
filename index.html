@@ -55,33 +55,74 @@ nav.links a { color: var(--mist); text-decoration: none; font-weight: 500; font-
 nav.links a:hover, nav.links a[aria-current="page"] { color: var(--ice); }
 
 /* Studio home */
-.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
-#cosmos { position: absolute; inset: 0; width: 100%; height: 100%; }
-.hero .wrap { position: relative; padding: 120px 0 104px; }
-.hero h1 { font-size: clamp(48px, 8.4vw, 112px); font-weight: 900; font-stretch: 62%; text-transform: uppercase; letter-spacing: -.01em; }
-.hero h1 .wide { display: block; font-stretch: 150%; font-weight: 800; color: var(--flare); font-size: .72em; letter-spacing: .01em; }
-.hero p.lede { max-width: 40ch; color: var(--mist); font-size: 20px; margin: 24px 0 0; }
-section.block { padding: 88px 0; border-bottom: 1px solid var(--line); }
-.label { margin-bottom: 24px; }
-.label .mono { color: var(--flare); }
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); min-height: min(760px, 92vh); display: grid; align-items: center;
+  background: radial-gradient(1200px 600px at 75% 40%, rgba(255,181,71,.10), transparent 60%), radial-gradient(900px 500px at 15% 90%, rgba(63,224,200,.07), transparent 60%), var(--void); }
+#scene { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; }
+#scene:active { cursor: grabbing; }
+.hero-fallback { position: absolute; right: 8%; top: 50%; width: min(42vw, 460px); aspect-ratio: 1; transform: translateY(-50%); border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff4dc 0, #ffb547 30%, #e0567a 62%, #2a1550 100%); box-shadow: 0 0 120px rgba(255,181,71,.35); }
+.hero .wrap { position: relative; z-index: 1; padding: 96px 0; pointer-events: none; }
+.hero .copy { max-width: 600px; pointer-events: auto; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--deep) 70%, transparent); backdrop-filter: blur(8px); font: 500 13px var(--mono); color: var(--mist); }
+.eyebrow b { width: 8px; height: 8px; border-radius: 50%; background: var(--su-teal); box-shadow: 0 0 12px var(--su-teal); }
+.hero h1 { font-size: clamp(52px, 8vw, 108px); font-weight: 900; font-stretch: 62%; text-transform: uppercase; letter-spacing: -.01em; margin-top: 22px; }
+.hero h1 .wide { display: block; font-stretch: 150%; font-weight: 800; font-size: .72em; letter-spacing: .01em;
+  background: linear-gradient(90deg, var(--flare), #ff8fc8 55%, var(--su-teal)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p.lede { max-width: 38ch; color: var(--mist); font-size: 20px; margin: 22px 0 0; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 12px; font: 600 16px var(--body); text-decoration: none; border: 1px solid var(--line); color: var(--ice); background: color-mix(in srgb, var(--deep) 80%, transparent); cursor: pointer; justify-self: start; transition: transform .2s, background .2s, border-color .2s; }
+.btn:hover { transform: translateY(-2px); border-color: #3a4366; }
+.btn.primary { background: var(--flare); color: var(--flare-ink); border-color: var(--flare); box-shadow: 0 10px 30px rgba(255,181,71,.25); }
+.btn.primary:hover { box-shadow: 0 14px 40px rgba(255,181,71,.38); }
+.drag-hint { position: absolute; right: 24px; bottom: 22px; z-index: 1; font: 500 12px var(--mono); color: var(--mist); opacity: .7; pointer-events: none; }
+.scroll-cue { position: absolute; left: 50%; bottom: 20px; z-index: 1; transform: translateX(-50%); width: 22px; height: 36px; border: 1.5px solid #3a4366; border-radius: 12px; }
+.scroll-cue::after { content: ""; position: absolute; left: 50%; top: 7px; width: 3px; height: 7px; margin-left: -1.5px; border-radius: 2px; background: var(--mist); animation: cue 1.8s infinite; }
+@keyframes cue { 0% { transform: translateY(0); opacity: 1 } 80% { transform: translateY(12px); opacity: 0 } 100% { opacity: 0 } }
+
+section.block { padding: 96px 0; border-bottom: 1px solid var(--line); }
+.section-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: 32px; }
+.label .mono, .section-head .mono { color: var(--flare); }
 h2 { font-size: clamp(36px, 5vw, 60px); font-weight: 800; font-stretch: 80%; }
-.game-card { display: grid; grid-template-columns: 1.2fr 1fr; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; text-decoration: none; color: var(--ice); background: var(--deep); transition: transform .25s, border-color .25s; }
-.game-card:hover { transform: translateY(-3px); border-color: var(--su-teal); }
-.game-card img { width: 100%; height: 100%; object-fit: cover; }
-.game-card .info { padding: 32px; display: grid; gap: 14px; align-content: center; }
-.game-card .row { display: flex; align-items: center; gap: 14px; }
-.game-card .row img { width: 64px; height: 64px; border-radius: 14px; }
-.game-card h3 { font-family: var(--game); font-weight: 800; font-size: 34px; text-transform: uppercase; letter-spacing: .01em; }
-.game-card p { margin: 0; color: var(--mist); }
-.more { font-weight: 600; color: var(--su-teal); }
+
+/* 3D tilt card */
+.tilt-wrap { perspective: 1200px; }
+.game-card { position: relative; display: grid; grid-template-columns: 1.25fr 1fr; border-radius: 24px; overflow: hidden; text-decoration: none; color: var(--ice);
+  background: linear-gradient(135deg, #1b1150, #120a3a); border: 1px solid #3a2d8a; transform-style: preserve-3d; transform: rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)); transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .3s;
+  box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+.game-card.tilting { transition: transform .08s linear; }
+.game-card:hover { box-shadow: 0 40px 100px rgba(27,17,80,.8), 0 0 0 1px var(--su-teal); }
+.game-card .art { position: relative; overflow: hidden; }
+.game-card .art img { width: 100%; height: 100%; object-fit: cover; transform: translateZ(0) scale(1.02); transition: transform .6s; }
+.game-card:hover .art img { transform: scale(1.06); }
+.game-card .glare { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(500px circle at var(--gx,50%) var(--gy,50%), rgba(255,255,255,.14), transparent 45%); opacity: 0; transition: opacity .3s; }
+.game-card:hover .glare { opacity: 1; }
+.game-card .info { padding: 36px; display: grid; gap: 16px; align-content: center; transform: translateZ(40px); }
+.game-card .row { display: flex; align-items: center; gap: 16px; }
+.game-card .row img { width: 72px; height: 72px; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+.game-card h3 { font-family: var(--game); font-weight: 900; font-size: 38px; text-transform: uppercase; line-height: .95; }
+.game-card h3 span { color: var(--su-yellow); }
+.game-card p { margin: 0; color: #cfc9f0; font-size: 17px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 700 13px var(--body); padding: 6px 12px; border-radius: 999px; color: #1b1150; }
+.chip.y { background: var(--su-yellow); } .chip.t { background: var(--su-teal); } .chip.p { background: var(--su-pink); }
+.more { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--su-teal); }
+.more i { font-style: normal; transition: transform .2s; }
+.game-card:hover .more i { transform: translateX(4px); }
 .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; font: 500 13px var(--mono); justify-self: start; }
 .pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--flare); box-shadow: 0 0 10px var(--flare); }
-.about { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: end; }
-.about p { color: var(--mist); max-width: 52ch; margin: 0; font-size: 18px; }
-.contact-card { border: 1px solid var(--line); background: var(--deep); border-radius: 14px; padding: 28px; display: grid; gap: 14px; align-content: start; }
-.contact-card .addr { font-family: var(--mono); font-size: 18px; color: var(--ice); word-break: break-all; }
-.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 12px; font: 600 16px var(--body); text-decoration: none; border: 1px solid var(--line); color: var(--ice); background: var(--deep); cursor: pointer; justify-self: start; }
-.btn:hover { filter: brightness(1.1); }
+
+/* Contact */
+.contact { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.contact p.sub { color: var(--mist); font-size: 18px; margin: 14px 0 0; max-width: 40ch; }
+.contact-cards { display: grid; gap: 14px; }
+.contact-card { display: flex; align-items: center; gap: 16px; border: 1px solid var(--line); background: var(--deep); border-radius: 16px; padding: 20px 22px; text-decoration: none; color: var(--ice); transition: transform .2s, border-color .2s; }
+a.contact-card:hover { transform: translateY(-2px); border-color: #3a4366; }
+.contact-card .ico { flex: none; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: #161b30; }
+.contact-card .txt { display: grid; gap: 2px; min-width: 0; flex: 1; }
+.contact-card .txt small { color: var(--mist); font-size: 13px; }
+.contact-card .txt b { font-weight: 600; font-size: 17px; overflow-wrap: anywhere; }
+.copy-btn { flex: none; padding: 9px 14px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--ice); font: 600 14px var(--body); cursor: pointer; }
+.copy-btn:hover { border-color: #3a4366; }
 
 /* ScaleUp page */
 #scaleup-view { background: var(--su-bg); position: relative; overflow: hidden; }
@@ -147,7 +188,10 @@ footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wr
 footer a { color: var(--mist); }
 
 @media (max-width: 860px) {
-  .game-card, .about, .su-hero { grid-template-columns: 1fr; }
+  .game-card, .contact, .su-hero { grid-template-columns: 1fr; }
+  .hero { min-height: 0; }
+  .hero .wrap { padding: 64px 0 300px; }
+  .drag-hint, .scroll-cue { display: none; }
   .features { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 480px) {
@@ -156,10 +200,15 @@ footer a { color: var(--mist); }
   .brand-name span { display: none; }
   .features { grid-template-columns: 1fr; }
   .game-card .info { padding: 24px; }
+  .hero .wrap { padding-bottom: 260px; }
+  header.top .wrap { gap: 10px; }
+  nav.links { gap: 14px; flex-wrap: nowrap; }
+  nav.links a[href="#games"] { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .game-card { transition: none; }
+  .game-card, .btn, .contact-card { transition: none; }
+  .scroll-cue::after { animation: none; }
 }
 </style>
 </head>
@@ -185,41 +234,70 @@ footer a { color: var(--mist); }
 
 <main id="home-view">
   <section class="hero" aria-labelledby="hero-title">
-    <canvas id="cosmos" aria-hidden="true"></canvas>
+    <div class="hero-fallback" id="hero-fallback" aria-hidden="true" hidden></div>
+    <canvas id="scene" aria-hidden="true"></canvas>
     <div class="wrap">
-      <h1 id="hero-title">Small studio.<span class="wide">Big games.</span></h1>
-      <p class="lede">We're a small game development company making fun, easy-to-play mobile games.</p>
+      <div class="copy">
+        <span class="eyebrow"><b></b>Independent game studio</span>
+        <h1 id="hero-title">Small studio.<span class="wide">Big games.</span></h1>
+        <p class="lede">We're a small game development company making fun, easy-to-play mobile games.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="#scaleup">Explore ScaleUp →</a>
+          <a class="btn" href="#contact">Get in touch</a>
+        </div>
+      </div>
     </div>
+    <span class="drag-hint">Drag to spin</span>
+    <a class="scroll-cue" href="#games" aria-label="Scroll to our games"></a>
   </section>
 
   <section class="block" id="games" aria-labelledby="games-title">
     <div class="wrap">
-      <div class="label"><span class="mono">Our games</span></div>
-      <a class="game-card" href="#scaleup" aria-label="ScaleUp: Cosmic Growth, see the game">
-        <img src="assets/feature.jpg" alt="ScaleUp: Cosmic Growth artwork with the S logo, a sun, a planet and a spaceship" width="1024" height="500">
-        <div class="info">
-          <div class="row">
-            <img src="assets/icon.jpg" alt="" width="64" height="64">
-            <h3 id="games-title">ScaleUp<br>Cosmic Growth</h3>
-          </div>
-          <span class="pill">Coming soon to Google Play</span>
-          <p>Grow from a tiny speck into the whole universe.</p>
-          <span class="more">See the game →</span>
+      <div class="section-head">
+        <div>
+          <span class="mono">Our games</span>
+          <h2 id="games-title">Now in the works</h2>
         </div>
-      </a>
+        <span class="pill">Coming soon to Google Play</span>
+      </div>
+      <div class="tilt-wrap">
+        <a class="game-card" id="game-card" href="#scaleup" aria-label="ScaleUp: Cosmic Growth, see the game">
+          <div class="art">
+            <img src="assets/feature.jpg" alt="ScaleUp: Cosmic Growth artwork with the S logo, a sun, a planet and a spaceship" width="1024" height="500">
+          </div>
+          <div class="info">
+            <div class="row">
+              <img src="assets/icon.jpg" alt="" width="72" height="72">
+              <h3>Scale<span>Up</span><br>Cosmic Growth</h3>
+            </div>
+            <p>Grow from a tiny speck into the whole universe.</p>
+            <div class="chips"><span class="chip y">Free to play</span><span class="chip t">Android</span><span class="chip p">Arcade</span></div>
+            <span class="more">See the game <i>→</i></span>
+          </div>
+          <span class="glare" aria-hidden="true"></span>
+        </a>
+      </div>
     </div>
   </section>
 
   <section class="block" id="contact" aria-labelledby="contact-title">
-    <div class="wrap about">
+    <div class="wrap contact">
       <div>
-        <div class="label"><span class="mono">Contact</span></div>
-        <h2 id="contact-title">Get in touch.</h2>
+        <span class="mono" style="color:var(--flare)">Contact</span>
+        <h2 id="contact-title">Say hello.</h2>
+        <p class="sub">Questions, feedback or support? We usually reply within two working days.</p>
       </div>
-      <div class="contact-card">
-        <span class="mono">Questions, feedback or support</span>
-        <a class="addr" href="mailto:support@chriscraftinteractive.com">support@chriscraftinteractive.com</a>
-        <button class="btn" type="button" id="copy-email">Copy address</button>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <span class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffb547" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+          <span class="txt"><small>Email</small><b><a href="mailto:support@chriscraftinteractive.com" style="color:inherit;text-decoration:none">support@chriscraftinteractive.com</a></b></span>
+          <button class="copy-btn" type="button" id="copy-email">Copy</button>
+        </div>
+        <a class="contact-card" href="https://www.instagram.com/scaleup.cg/" target="_blank" rel="noopener">
+          <span class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8fc8" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#ff8fc8"/></svg></span>
+          <span class="txt"><small>Instagram</small><b>@scaleup.cg</b></span>
+          <span aria-hidden="true" style="color:var(--mist)">↗</span>
+        </a>
       </div>
     </div>
   </section>
@@ -349,6 +427,7 @@ footer a { color: var(--mist); }
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (() => {
   // Screenshot gallery
@@ -379,8 +458,8 @@ footer a { color: var(--mist); }
   document.getElementById("copy-email").addEventListener("click", async e => {
     const btn = e.currentTarget;
     try { await navigator.clipboard.writeText("support@chriscraftinteractive.com"); btn.textContent = "Copied"; }
-    catch { btn.textContent = "Select the address above to copy"; }
-    setTimeout(() => btn.textContent = "Copy address", 2200);
+    catch { btn.textContent = "Select to copy"; }
+    setTimeout(() => btn.textContent = "Copy", 2200);
   });
 
   // Routing
@@ -402,43 +481,140 @@ footer a { color: var(--mist); }
   addEventListener("hashchange", route);
   route();
 
-  // Home hero starfield
-  const cv = document.getElementById("cosmos"), ctx = cv.getContext("2d");
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let W, H, stars = [];
-  function resize() {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    stars = Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .2, a: Math.random() * .7 + .15, tw: Math.random() * 6.28 }));
+  // Tilt card
+  const card = document.getElementById("game-card");
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (card && !reduceMotion && matchMedia("(hover: hover)").matches) {
+    card.addEventListener("pointermove", e => {
+      const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      card.classList.add("tilting");
+      card.style.setProperty("--ry", ((x - .5) * 10).toFixed(2) + "deg");
+      card.style.setProperty("--rx", ((.5 - y) * 8).toFixed(2) + "deg");
+      card.style.setProperty("--gx", (x * 100).toFixed(1) + "%");
+      card.style.setProperty("--gy", (y * 100).toFixed(1) + "%");
+    });
+    card.addEventListener("pointerleave", () => { card.classList.remove("tilting"); card.style.setProperty("--rx", "0deg"); card.style.setProperty("--ry", "0deg"); });
   }
-  resize(); addEventListener("resize", resize);
-  const easeOut = x => 1 - Math.pow(1 - x, 3);
-  function frame(t) {
-    if (views.home.hidden) { requestAnimationFrame(frame); return; }
-    ctx.clearRect(0, 0, W, H);
-    for (const s of stars) {
-      ctx.fillStyle = `rgba(232,236,247,${reduce ? s.a : s.a * (.6 + .4 * Math.sin(t / 900 + s.tw))})`;
-      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+
+  // Hero 3D scene
+  window.startScene = function () {
+    const canvas = document.getElementById("scene");
+    if (!window.THREE) { document.getElementById("hero-fallback").hidden = false; canvas.remove(); return; }
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
+    catch (e) { document.getElementById("hero-fallback").hidden = false; canvas.remove(); return; }
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, 1, .1, 200);
+    camera.position.set(0, 0, 14);
+
+    // Lights
+    scene.add(new THREE.AmbientLight(0x3a2d8a, .9));
+    const key = new THREE.PointLight(0xfff1d6, 2.2, 60); key.position.set(-8, 6, 10); scene.add(key);
+    const rim = new THREE.PointLight(0x3fe0c8, 1.6, 40); rim.position.set(8, -4, -4); scene.add(rim);
+    const pinkL = new THREE.PointLight(0xff8fc8, 1.2, 40); pinkL.position.set(6, 6, 4); scene.add(pinkL);
+
+    // Group that holds the system (positioned right on desktop)
+    const sys = new THREE.Group(); scene.add(sys);
+
+    // Planet with banded gradient texture
+    const tex = (() => {
+      const c = document.createElement("canvas"); c.width = 512; c.height = 256; const g = c.getContext("2d");
+      const grd = g.createLinearGradient(0, 0, 0, 256);
+      grd.addColorStop(0, "#ffd36b"); grd.addColorStop(.3, "#ff9f4a"); grd.addColorStop(.55, "#e0567a"); grd.addColorStop(.8, "#7a3db8"); grd.addColorStop(1, "#2a1550");
+      g.fillStyle = grd; g.fillRect(0, 0, 512, 256);
+      for (let i = 0; i < 26; i++) { g.fillStyle = `rgba(255,255,255,${Math.random() * .08})`; const y = Math.random() * 256; g.fillRect(0, y, 512, 2 + Math.random() * 10); }
+      const t = new THREE.CanvasTexture(c); return t;
+    })();
+    const planet = new THREE.Mesh(new THREE.SphereGeometry(2.4, 64, 64), new THREE.MeshStandardMaterial({ map: tex, roughness: .55, metalness: .1, emissive: 0x2a1040, emissiveIntensity: .4 }));
+    sys.add(planet);
+
+    // Glow
+    const glowTex = (() => { const c = document.createElement("canvas"); c.width = c.height = 256; const g = c.getContext("2d"); const r = g.createRadialGradient(128, 128, 20, 128, 128, 128); r.addColorStop(0, "rgba(255,181,71,.55)"); r.addColorStop(.5, "rgba(224,86,122,.18)"); r.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = r; g.fillRect(0, 0, 256, 256); return new THREE.CanvasTexture(c); })();
+    const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+    glow.scale.set(11, 11, 1); sys.add(glow);
+
+    // Ring
+    const ringGeo = new THREE.RingGeometry(3.3, 4.9, 128);
+    const ringTex = (() => { const c = document.createElement("canvas"); c.width = 256; c.height = 4; const g = c.getContext("2d"); const grd = g.createLinearGradient(0, 0, 256, 0); grd.addColorStop(0, "rgba(63,224,200,.0)"); grd.addColorStop(.15, "rgba(63,224,200,.6)"); grd.addColorStop(.5, "rgba(255,207,46,.45)"); grd.addColorStop(.8, "rgba(255,143,200,.5)"); grd.addColorStop(1, "rgba(255,143,200,0)"); g.fillStyle = grd; g.fillRect(0, 0, 256, 4); return new THREE.CanvasTexture(c); })();
+    // map radial UVs
+    const pos = ringGeo.attributes.position, uv = ringGeo.attributes.uv, v3 = new THREE.Vector3();
+    for (let i = 0; i < pos.count; i++) { v3.fromBufferAttribute(pos, i); uv.setXY(i, (v3.length() - 3.3) / 1.6, .5); }
+    const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ map: ringTex, transparent: true, side: THREE.DoubleSide, depthWrite: false }));
+    ring.rotation.x = Math.PI * .42; ring.rotation.y = -.25; sys.add(ring);
+
+    // Orbiting moons (small -> bigger, echoing ScaleUp's growth)
+    const moons = [
+      { r: .22, d: 5.6, s: .55, c: 0x3fe0c8, tilt: .3 },
+      { r: .34, d: 6.6, s: .38, c: 0xff8fc8, tilt: -.2 },
+      { r: .5,  d: 7.8, s: .26, c: 0xffcf2e, tilt: .12 }
+    ].map((m, i) => {
+      const mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(m.r, 1), new THREE.MeshStandardMaterial({ color: m.c, roughness: .35, metalness: .2, emissive: m.c, emissiveIntensity: .25, flatShading: true }));
+      const pivot = new THREE.Group(); pivot.rotation.x = m.tilt; pivot.add(mesh); sys.add(pivot);
+      return { ...m, mesh, pivot, a: i * 2.1 };
+    });
+
+    // Floating crystals
+    const crystals = [];
+    for (let i = 0; i < 14; i++) {
+      const m = new THREE.Mesh(new THREE.OctahedronGeometry(.08 + Math.random() * .14), new THREE.MeshStandardMaterial({ color: [0x3fe0c8, 0xff8fc8, 0xffcf2e, 0xe8ecf7][i % 4], roughness: .3, flatShading: true }));
+      const ang = Math.random() * Math.PI * 2, dist = 5 + Math.random() * 4;
+      m.position.set(Math.cos(ang) * dist, Math.sin(ang) * dist * .55, (Math.random() - .5) * 4);
+      m.userData = { sp: .2 + Math.random() * .6, ph: Math.random() * 6 };
+      sys.add(m); crystals.push(m);
     }
-    const k = reduce ? .5 : (t % 3200) / 3200;
-    const cx = W * (W < 860 ? .8 : .72), cy = H * .45, base = Math.min(W, H) * .08;
-    const r = base * (1 + 1.4 * easeOut(k));
-    const g = ctx.createRadialGradient(cx - r * .3, cy - r * .3, r * .1, cx, cy, r);
-    g.addColorStop(0, "rgba(255,244,220,.95)"); g.addColorStop(.45, "rgba(255,181,71,.85)"); g.addColorStop(1, "rgba(122,61,0,0)");
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, r * 1.15, 0, 6.283); ctx.fill();
-    ctx.strokeStyle = "rgba(255,181,71,.18)"; ctx.lineWidth = 1;
-    for (let i = 1; i <= 3; i++) { ctx.beginPath(); ctx.arc(cx, cy, r * (1.4 + i * .55), 0, 6.283); ctx.stroke(); }
-    if (!reduce) {
-      for (let i = 0; i < 7; i++) {
-        const ang = i * .9 + t / 2400, dist = r * (3.4 - 2.2 * ((t / 1700 + i * .37) % 1));
-        ctx.fillStyle = "rgba(232,236,247,.55)"; ctx.beginPath(); ctx.arc(cx + Math.cos(ang) * dist, cy + Math.sin(ang) * dist, 1.5 + (i % 3), 0, 6.283); ctx.fill();
-      }
-      requestAnimationFrame(frame);
+
+    // Stars
+    const starGeo = new THREE.BufferGeometry(); const N = 1400, arr = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) { arr[i * 3] = (Math.random() - .5) * 120; arr[i * 3 + 1] = (Math.random() - .5) * 70; arr[i * 3 + 2] = -10 - Math.random() * 60; }
+    starGeo.setAttribute("position", new THREE.BufferAttribute(arr, 3));
+    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xe8ecf7, size: .12, transparent: true, opacity: .8, sizeAttenuation: true }));
+    scene.add(stars);
+
+    // Layout
+    function layout() {
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+      if (w > 860) { sys.position.set(5.4, 0, 0); sys.scale.setScalar(1); }
+      else { sys.position.set(0, -3.2, 0); sys.scale.setScalar(.72); }
     }
-  }
-  requestAnimationFrame(frame);
+    layout(); addEventListener("resize", layout);
+
+    // Interaction: drag to spin + gentle mouse parallax
+    let targetRX = 0, targetRY = 0, dragY = 0, dragging = false, lastX = 0, vel = 0, mx = 0, my = 0;
+    canvas.addEventListener("pointerdown", e => { dragging = true; lastX = e.clientX; canvas.setPointerCapture(e.pointerId); });
+    canvas.addEventListener("pointerup", () => { dragging = false; });
+    canvas.addEventListener("pointermove", e => {
+      if (dragging) { const dx = e.clientX - lastX; lastX = e.clientX; vel = dx * .006; dragY += vel; }
+    });
+    addEventListener("pointermove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+
+    const home = document.getElementById("home-view");
+    let visible = true;
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(canvas);
+
+    const clock = new THREE.Clock();
+    function tick() {
+      requestAnimationFrame(tick);
+      if (home.hidden || !visible) return;
+      const t = clock.getElapsedTime();
+      const speed = reduceMotion ? 0 : 1;
+      if (!dragging) { vel *= .95; dragY += vel; }
+      planet.rotation.y = t * .12 * speed + dragY;
+      ring.rotation.z = t * .05 * speed;
+      targetRX = my * .25; targetRY = mx * .35;
+      sys.rotation.x += (targetRX - sys.rotation.x) * .05;
+      sys.rotation.y += (targetRY + dragY * .15 - sys.rotation.y) * .05;
+      moons.forEach(m => { const a = m.a + t * m.s * speed; m.mesh.position.set(Math.cos(a) * m.d, 0, Math.sin(a) * m.d); m.mesh.rotation.x = t * .8; m.mesh.rotation.y = t * .6; });
+      crystals.forEach(c => { c.rotation.x = t * c.userData.sp; c.rotation.y = t * c.userData.sp * .8; c.position.y += Math.sin(t * c.userData.sp + c.userData.ph) * .002 * speed; });
+      stars.rotation.y = t * .004 * speed;
+      camera.position.x += (mx * .8 - camera.position.x) * .03; camera.position.y += (-my * .5 - camera.position.y) * .03; camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera);
+    }
+    tick();
+  };
 })();
+window.startScene && window.startScene();
 </script>
 </body>
 </html>

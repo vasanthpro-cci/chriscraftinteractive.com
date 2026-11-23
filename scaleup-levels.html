@@ -82,6 +82,9 @@ header.top .wrap { display: flex; align-items: center; justify-content: space-be
 .ztrack { position: relative; flex: 1; width: 8px; border-radius: 99px; background: rgba(255,255,255,.18); cursor: pointer; }
 .ztrack i { position: absolute; left: 0; right: 0; top: 0; border-radius: 99px; background: linear-gradient(180deg, var(--teal), var(--violet)); }
 .ztrack u { position: absolute; left: -5px; right: -5px; height: 2px; background: rgba(255,255,255,.45); border-radius: 2px; pointer-events: none; }
+.ztrack .you { position: absolute; right: 16px; transform: translateY(-50%); display: flex; align-items: center; gap: 4px; padding: 3px 8px 3px 5px; border-radius: 999px; border: 2px solid #1b1150; background: var(--yellow); color: #1b1150; font: 700 12px var(--display); cursor: pointer; white-space: nowrap; box-shadow: 0 2px 0 #b88a00; z-index: 2; }
+.ztrack .you svg { width: 14px; height: 14px; fill: #1b1150; }
+.ztrack .you::after { content: ""; position: absolute; right: -14px; top: 50%; width: 12px; height: 2px; background: var(--yellow); }
 .ztrack b { position: absolute; left: 50%; top: 0; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; background: var(--teal); border: 4px solid #fff; box-shadow: 0 0 12px rgba(63,224,200,.8); }
 .scalebar { position: absolute; left: 18px; bottom: 18px; font: 700 14px var(--body); color: #fff; text-shadow: 0 1px 3px #000; pointer-events: none; }
 .scalebar i { display: block; height: 10px; margin-top: 4px; border: 2px solid #fff; border-top: 0; }
@@ -273,8 +276,10 @@ footer a { color: var(--muted); }
   const near = Lz => { let b = 0, bd = 1e9; for (let i = 0; i < N; i++) { const d = Math.abs(LV[i] - Lz); if (d < bd) { bd = d; b = i; } } return b; };
   const fromLog = Lz => { if (Lz <= LV[0]) return 0; if (Lz >= LV[MAX]) return MAX; for (let a = 0; a < MAX; a++) if (Lz <= LV[a + 1]) return a + (Lz - LV[a]) / ((LV[a + 1] - LV[a]) || 1); return MAX; };
 
-  const IM = [];
-  const img = i => { if (!IM[i]) { const m = new Image(); m.decoding = "async"; m.src = "/assets/lv-" + String(i + 1).padStart(3, "0") + ".webp"; IM[i] = m; } return IM[i]; };
+  // small pictures for distant objects, full-resolution ones once an object is drawn large
+  const IM = [], HD = [];
+  const pic = (arr, i, pre) => { if (!arr[i]) { const m = new Image(); m.decoding = "async"; m.src = "/assets/" + pre + String(i + 1).padStart(3, "0") + ".webp"; arr[i] = m; } return arr[i]; };
+  const img = (i, px) => { const lo = pic(IM, i, "lv-"); if ((px || 0) * dpr > 230) { const hi = pic(HD, i, "lvhd-"); if (hi.complete && hi.naturalWidth) return hi; } return lo; };
 
   let W = 0, H = 0, dpr = 1, open = -1, hovered = -1;
   let zL = LV[0], zT = LV[0];          // current and target zoom (log10 of the visible width in metres)
@@ -314,7 +319,7 @@ footer a { color: var(--muted); }
     const k2 = Math.min(MAX, k + 1), t = k2 === k ? 0 : Math.max(0, Math.min(1, (V - ZV[k]) / (ZV[k2] - ZV[k])));
     const cx = ZP[k][0] + (ZP[k2][0] - ZP[k][0]) * t, cy = ZP[k][1] + (ZP[k2][1] - ZP[k][1]) * t, nr = near(zL);
     const fi = fromLog(zL), ox = (W - 56) / 2, oy = H / 2;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.imageSmoothingQuality = "high";
     const h = (250 + fi * 23) % 360;
     const gr = ctx.createRadialGradient(ox, oy, 0, ox, oy, Math.max(W, H) * .75);
     gr.addColorStop(0, `hsl(${h},60%,19%)`); gr.addColorStop(.6, `hsl(${h},58%,12%)`); gr.addColorStop(1, `hsl(${h},58%,7%)`);
@@ -333,8 +338,8 @@ footer a { color: var(--muted); }
       ctx.globalAlpha = al * (i === nr ? 1 : .85);
       if (i === nr) { ctx.fillStyle = "rgba(255,210,63,.12)"; ctx.beginPath(); ctx.arc(x, y, r * 1.22 + 4, 0, 6.283); ctx.fill(); }
       if (i === open || i === hovered) { const pu = .5 + .5 * Math.sin(tm * 3.2); ctx.strokeStyle = i === open ? "rgba(255,210,63,.9)" : "rgba(255,255,255,.7)"; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x, y, r * 1.22 + 8 + pu * 5, 0, 6.283); ctx.stroke(); }
-      const im = img(i);
-      if (im.complete && im.naturalWidth) { const s = Math.min(r, 1800) * 2.2; ctx.drawImage(im, x - s / 2, y - s / 2, s, s); }
+      const s2 = Math.min(r, 1800) * 2.2, im = img(i, s2);
+      if (im.complete && im.naturalWidth) ctx.drawImage(im, x - s2 / 2, y - s2 / 2, s2, s2);
       else { ctx.fillStyle = L[i].c || "#9b7bff"; ctx.beginPath(); ctx.arc(x, y, r * .85, 0, 6.283); ctx.fill(); }
       if (r < WS * .6) vis.push({ i, x, y, r, a: al });
       if (r > 12 && r < WS * .55) {
@@ -380,6 +385,13 @@ footer a { color: var(--muted); }
 
   // world tick marks on the slider, placed by size
   WD.forEach(w => { const t = document.createElement("u"); t.style.top = ((LV[w.s] - LV[0]) / (LV[MAX] - LV[0]) * 100) + "%"; $("zTrack").appendChild(t); });
+  // a marker at human size, so you always know where "you" are on the scale
+  const HU = L.findIndex(o => o.n === "Human");
+  if (HU >= 0) { const b = document.createElement("button"); b.type = "button"; b.className = "you"; b.setAttribute("aria-label", "Jump to human size");
+    b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="3"/><path d="M7 21v-7H5.5v-4.5A2.5 2.5 0 0 1 8 7h8a2.5 2.5 0 0 1 2.5 2.5V14H17v7h-3.5v-6h-3v6z"/></svg><span>You</span>';
+    b.style.top = ((LV[HU] - LV[0]) / (LV[MAX] - LV[0]) * 100) + "%";
+    b.addEventListener("pointerdown", e => e.stopPropagation()); b.onclick = e => { e.stopPropagation(); show(HU); };
+    $("zTrack").appendChild(b); }
 
   // card
   function show(i, fromList) {

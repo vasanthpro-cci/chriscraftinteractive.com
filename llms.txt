@@ -14,7 +14,7 @@
 
 - Genre: arcade / casual growth game ("grow by absorbing smaller things")
 - Platform: Android (Google Play), free to play with ads and optional Fusion Orbs purchases
-- 112 levels, from quarks and atoms out to the cosmic web
+- 113 levels, from quarks and atoms out to the cosmic web
 - One real science fact per level
 - 6 game modes, including Team Battle
 - 22 vehicles, each with its own power, upgradable in the garage
@@ -23,6 +23,10 @@
 - Developer: ChrisCraft Interactive
 - Status: coming soon to Google Play
 - Official Instagram (news, trailers, launch updates): @scaleup.cg – https://www.instagram.com/scaleup.cg/
+
+## Pages
+
+- [ScaleUp level map – all 113 levels](https://chriscraftinteractive.com/scaleup-levels): every object from a Planck speck (1.6 × 10⁻³⁵ m) to the observable universe (8.8 × 10²⁶ m), with its size and a science fact.
 
 ## Optional
 

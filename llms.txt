@@ -1,0 +1,28 @@
+# ChrisCraft Interactive
+
+> ChrisCraft Interactive is a small independent game studio that makes fun, easy-to-play mobile games. Its first game is ScaleUp: Cosmic Growth for Android.
+
+- Website: https://chriscraftinteractive.com/
+- Contact: support@chriscraftinteractive.com
+- Instagram: https://www.instagram.com/scaleup.cg/
+
+## Games
+
+- [ScaleUp: Cosmic Growth](https://chriscraftinteractive.com/scaleup/): free arcade game for Android, coming soon to Google Play. Start as a tiny speck and grow into the whole universe.
+
+## ScaleUp: Cosmic Growth – key facts
+
+- Genre: arcade / casual growth game ("grow by absorbing smaller things")
+- Platform: Android (Google Play), free to play with ads and optional Fusion Orbs purchases
+- 112 levels, from quarks and atoms out to the cosmic web
+- One real science fact per level
+- 6 game modes, including Team Battle
+- 22 vehicles, each with its own power, upgradable in the garage
+- 17 ranks across 8 leagues
+- Reward wheel that multiplies rewards up to ×4
+- Developer: ChrisCraft Interactive
+- Status: coming soon to Google Play
+
+## Optional
+
+- [Privacy policy](https://chriscraftinteractive.com/privacy)
